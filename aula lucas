@@ -1,0 +1,70 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        boolean continua = true;
+        FileWriter fw = null;
+
+        try {
+            fw = new FileWriter("numeroscalculados.txt");
+
+            while (continua) {
+                System.out.println("1 - Soma \n2 - Subtração \n3 - Multiplicação \n4 - Divisão.");
+                System.out.println("Escolha a operação?");
+                int Operacao = scan.nextInt();
+                System.out.println("Qual o número inicial?: ");
+                BigDecimal valor1 = scan.nextBigDecimal();
+                System.out.println("Qual o número que fará a mudança?: ");
+                BigDecimal valor2 = scan.nextBigDecimal();
+
+                if (Operacao == 1) {
+                    // Operação soma
+                    BigDecimal resultado = valor1.add(valor2);
+                    System.out.println("Resultado: " + resultado);
+                    fw.write("Soma de " + valor1 + " + " + valor2 + " = " + resultado + "\n");
+                }
+
+                if (Operacao == 2) {
+                    // Operação subtração
+                    BigDecimal resultado = valor1.subtract(valor2);
+                    System.out.println("Resultado: " + resultado);
+                    fw.write("Subtração de " + valor1 + " - " + valor2 + " = " + resultado + "\n");
+                }
+
+                if (Operacao == 3) {
+                    // Operação multiplicação
+                    BigDecimal resultado = valor1.multiply(valor2);
+                    System.out.println("Resultado: " + resultado);
+                    fw.write("Multiplicação de " + valor1 + " * " + valor2 + " = " + resultado + "\n");
+                }
+
+                if (Operacao == 4) {
+                    // Operação divisão
+                    if (valor2.compareTo(BigDecimal.ZERO) == 0) {
+                        System.out.println("Não da pra dividir por zero seu burro.");
+                        fw.write("Tentativa de divisão por zero.\n");
+                    } else {
+                        BigDecimal resultado = valor1.divide(valor2, 2, BigDecimal.ROUND_HALF_UP);
+                        System.out.println("Resultado: " + resultado);
+                        fw.write("Divisão de " + valor1 + " / " + valor2 + " = " + resultado + "\n");
+                    }
+                }
+
+                System.out.println(" vai continuar ?  \n1 - Sim \n2 - Não");
+                int reiniciar = scan.nextInt();
+                if (reiniciar == 2) {
+                    continua = false;
+                    System.out.println("estude mais e logo não vai precisar me usar!");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao acessar o arquivo: " + e.getMessage());
+        } finally {
+            try {
+                if (fw != null) {
+                    fw.close();
+                }
